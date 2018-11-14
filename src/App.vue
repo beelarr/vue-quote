@@ -1,32 +1,43 @@
 <template>
-    <div class="container">
-        <new-quote @quoteAdded="postNewQuote"></new-quote>
-        <quote-grid :quotes="quotes" ></quote-grid>
+  <div class="container">
+    <app-header :quoteCount="quotes.length" :maxQuotes="maxQuotes"></app-header>
+    <new-quote @quoteAdded="newQuote"></new-quote>
+    <quote-grid :quotes="quotes" @quoteDeleted="deleteQuote"></quote-grid>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <div class="alert alert-info">Info: Click on a Quote to delete it!</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    import QuoteGrid from './components/QuoteGrid.vue';
-    import NewQuote from './components/NewQuote.vue';
+	import QuoteGrid from './components/QuoteGrid.vue';
+	import NewQuote from './components/NewQuote.vue';
+	import Header from './components/Header.vue';
 
-    export default {
-        data: () => ({
-            quotes: [
-                'Just a quote to see.'
-            ],
-            maxQuotes: 10
-          }),
-      methods: {
-        	postNewQuote(quote){
-        		this.quotes.push(quote)
-          }
-      },
-      components: {
-        	quoteGrid: QuoteGrid,
-          newQuote: NewQuote
-      }
-    }
+	export default {
+		data: () => ({
+      quotes: [
+        'Just a Quote to see something'
+      ],
+      maxQuotes: 10
+
+		}),
+		methods: {
+			newQuote(quote) {
+				return this.quotes.length >= this.maxQuotes ?
+      alert('Please delete Quotes first!') : this.quotes.push(quote);
+			},
+			deleteQuote(index) {
+				this.quotes.splice(index, 1);
+			}
+		},
+		components: {
+			quoteGrid: QuoteGrid,
+			newQuote: NewQuote,
+			appHeader: Header
+		}
+	}
 </script>
 
-<style>
-</style>
